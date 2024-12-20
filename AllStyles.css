@@ -352,3 +352,23 @@ form button:hover {
     display: none; /* Ocultar por defecto */
     margin-top: 10px;
 }
+
+.row-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.row-container .field-group {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.form-row {
+    margin-bottom: 10px;
+}
+
+.error-message {
+    color: red;
+}
