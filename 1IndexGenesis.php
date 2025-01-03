@@ -10,26 +10,23 @@
 
 <body>
     <div class="container">
-        <!-- Columna izquierda -->
         <div class="left-column">
             <h1>NOTARÍA</h1>
             <div class="logo">
                 <img src="img/Nota71.jpg" alt="Logo de la Notaría" />
             </div>
-
-            <h1>BIENVENIDOS</h1><br>
+            <h1>BIENVENIDO</h1><br>
             <div id="floating-menu" class="floating-menu">
                 <a href="1IndexGenesis.php" class="boton active">Inicio</a>
-                <a href="2FormularioBaseDatos.php" class="boton">Base de Datos</a>
-                <a href="3FormularioPlantilla.php" class="boton">Crear nueva plantilla</a>
-                <a href="10Generarescritura.php" class="boton">Generar nueva escritura</a>
+                <a href="2FormularioBaseDatos.php" class="boton">Base datos</a>
+                <a href="5Generarescritura.php" class="boton">Generar escritura</a>
             </div>
         </div>
 
 
         <!-- Columna central y derecha -->
         <div class="right-column">
-            
+
             <div class="middle-column">
                 <p><span class="escritura-texto">ESCRITURACIÓN</span></p>
             </div>

@@ -1,4 +1,4 @@
-<?php 
+<?php
 // Conexión a la base de datos
 include("ConexionBaseDatos.php");
 
@@ -99,6 +99,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 $_SESSION['token'] = bin2hex(random_bytes(32));
 ?>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -119,28 +147,24 @@ $_SESSION['token'] = bin2hex(random_bytes(32));
             <h1>ESCRITURACIÓN</h1><br>
             <div id="floating-menu" class="floating-menu">
                 <a href="1IndexGenesis.php" class="boton">Inicio</a>
-                <a href="2FormularioBaseDatos.php" class="boton active">Base de Datos</a>
-                <a href="3FormularioPlantilla.php" class="boton">Crear nueva plantilla</a>
-                <a href="10Generarescritura.php" class="boton">Generar nueva escritura</a>
+                <a href="2FormularioBaseDatos.php" class="boton active">Base datos</a>
+                <a href="5Generarescritura.php" class="boton">Generar escritura</a>
             </div>
         </div>
 
         <div class="right-column">
             <div class="middle-column">
-                <h1>BASE DE DATOS</h1>
+                <h1>ACTUALIZA BASE DATOS</h1><br>
 
                 <div class="table-buttons">
                     <a href="?section=fideicomisos" class="boton <?php if ($mostrarFideicomisos) echo 'active'; ?>">Fideicomisos</a>
                     <a href="?section=fideicomitentes" class="boton <?php if ($mostrarFideicomitentes) echo 'active'; ?>">Fideicomitentes</a>
                     <a href="?section=fiduciarias" class="boton <?php if ($mostrarFiduciarias) echo 'active'; ?>">Fiduciarias</a>
                     <a href="?section=proyectos" class="boton <?php if ($mostrarProyectos) echo 'active'; ?>">Proyectos</a>
-                    <a href="6Matriculas.php" class="boton <?php if ($mostrarMatriculas) echo 'active'; ?>">Inmuebles</a> <!-- Enlace al nuevo archivo -->
-                    <a href="5Compradores.php" class="boton <?php if ($mostrarCompradores) echo 'active'; ?>">Compradores</a>
                 </div>
 
                 <!-- Formularios de fideicomisos -->
                 <?php if ($mostrarFideicomisos): ?>
-                    <br>
                     <br>
                     <form method="POST" action="">
                         <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
@@ -156,7 +180,6 @@ $_SESSION['token'] = bin2hex(random_bytes(32));
                 <!-- Formularios de fideicomitentes -->
                 <?php if ($mostrarFideicomitentes): ?>
                     <br>
-                    <br>
                     <form method="POST" action="">
                         <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
                         <label for="nit_fdcomitente">NIT Fideicomitente:</label>
@@ -169,7 +192,6 @@ $_SESSION['token'] = bin2hex(random_bytes(32));
 
                 <!-- Formularios de fiduciarias -->
                 <?php if ($mostrarFiduciarias): ?>
-                    <br>
                     <br>
                     <form method="POST" action="">
                         <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
@@ -184,7 +206,6 @@ $_SESSION['token'] = bin2hex(random_bytes(32));
                 <!-- Formularios de proyectos -->
                 <?php if ($mostrarProyectos): ?>
                     <br>
-                    <br>
                     <form method="POST" action="">
                         <input type="hidden" name="token" value="<?php echo $_SESSION['token']; ?>">
                         <label for="nit_proy">NIT del Proyecto:</label>
@@ -194,6 +215,9 @@ $_SESSION['token'] = bin2hex(random_bytes(32));
                         <button type="submit" name="proyectos">Procesar Proyecto</button>
                     </form>
                 <?php endif; ?>
+                <br><br><br><br>
+                <a href="3A_INMUEBLESMatriculas.php" class="boton <?php if ($mostrarMatriculas) echo 'active'; ?>">Inmuebles</a> <!-- Enlace al nuevo archivo -->
+                <a href="4Compradores.php" class="boton <?php if ($mostrarCompradores) echo 'active'; ?>">Compradores</a>
             </div>
         </div>
     </div>
