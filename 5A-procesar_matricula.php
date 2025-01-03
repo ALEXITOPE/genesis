@@ -25,7 +25,7 @@ $sql_banco = "SELECT nombre_bco FROM bancos";
 $result_banco = $conn->query($sql_banco);
 
 // Verificar si se ha enviado el formulario
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['new_query'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['confirmar']) && !isset($_POST['new_query'])) {
     // Obtener datos del formulario
     $tipo_escritura = $_POST['tipo_escritura'] ?? 'contado';
     $matricula_ap = $_POST['matr_ap'] ?? '';
@@ -48,7 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['new_query'])) {
             $error_message = 'No se encontraron resultados para las matrículas proporcionadas.';
         }
     }
+}
 
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['confirmar'])) {
+    $matricula_ap = $_POST['matr_ap'] ?? '';
+    $matricula_pq = $_POST['matr_pq'] ?? '';
+    $matricula_dp = $_POST['matr_dp'] ?? '';
+    $datos_inmuebles = $_POST['datos_inmuebles'] ?? [];
+    $datos_compradores = $_POST['datos_compradores'] ?? [];
     // Procesamiento de los compradores
     if ($datos_inmuebles && count($datos_inmuebles) > 0) {
         foreach ($datos_inmuebles as $compradores) {
@@ -79,7 +86,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['new_query'])) {
         $resultado_actualizacion = actualizarBaseDatos(
             $conn,
             $datos_inmuebles,
-            $datos_compradores
+            $datos_compradores,
+            $matricula_ap
         );
 
         // Verificar si la actualización fue exitosa
@@ -100,11 +108,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['new_query'])) {
 }
 
 ?>
-
-
-
-
-
 
 <!DOCTYPE html>
 <html lang="es">
@@ -172,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['new_query'])) {
                                 <td><label for="matr_dp">Matrícula Depósito:</label></td>
                                 <td><input type="text" name="matr_dp" value="<?php echo htmlspecialchars($matricula_dp ?? ''); ?>" required></td>
                             </tr>
-                            <td colspan="2"><button type="submit">Consultar</button></td>
+                            <td colspan="2"><button type="submit" name="consultar">Consultar</button></td>
                         </table>
                     <?php endif; ?>
                     <?php if (isset($data) && count($data) > 0): ?>
@@ -354,9 +357,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['new_query'])) {
                             </table>
                         </div>
                         <!-- Botón de actualizar -->
-                        <form method="POST" action=5A-procesar_matricula.php style="text-align: center; margin-top: 20px;">
+                        <form method="POST" action="5A-procesar_matricula.php" style="text-align: center; margin-top: 20px;">
                             <button type="submit" name="confirmar" value="1" class="boton">CONFIRMAR</button>
-                        </div>
+                        </form>
                     <?php endif; ?>
                 </form>
             </div>

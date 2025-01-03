@@ -267,45 +267,83 @@ function obtenerDatosInmuebleYCompradores($conn, $matricula_ap, $matricula_pq, $
 
 
 // Función para actualizar los datos en la base de datos
-function actualizarBaseDatos($conn, $datos_inmuebles, $datos_compradores) {
-    // Inicia la transacción
-    $conn->begin_transaction();
+function actualizarBaseDatos($conn, $datos_inmuebles, $datos_compradores, $matricula_ap) {
 
     try {
         // Actualización de inmuebles y compradores en una sola consulta
-        $update_sql = "
+        $conn->begin_transaction();
+
+        $update_inmuebles_sql = "
             UPDATE inmuebles AS i
-            JOIN compradores AS c ON c.matr_inm = i.matr_inm
             SET
                 i.tipo_inm = ?, 
                 i.num_inm = ?, 
                 i.torre_inm = ?, 
-                i.vlr_inm = ?, 
-                c.nombre_comp = ?, 
-                c.cc_comp = ?, 
-                c.expcc_comp = ?, 
-                c.escivil_comp = ?, 
-                c.domicilio_comp = ?
+                i.vlr_inm = ?
             WHERE i.matr_inm = ?;
         ";
 
-        // Preparar la consulta para actualización conjunta
-        if ($stmt = $conn->prepare($update_sql)) {
-            foreach ($datos_inmuebles as $index => $inmueble) {
-                $comprador = $datos_compradores[$index]; // Se asume que los datos de compradores están alineados con los de inmuebles
-                
-                // Asignar los parámetros
+        $update_compradores_sql = "
+            UPDATE compradores AS c
+            SET
+                c.nombre_comp1 = ?, 
+                c.cc_comp1 = ?, 
+                c.expcc_comp1 = ?, 
+                c.dom_comp1 = ?, 
+                c.escivil_comp1 = ?,
+                c.nombre_comp2 = ?, 
+                c.cc_comp2 = ?, 
+                c.expcc_comp2 = ?, 
+                c.dom_comp2 = ?, 
+                c.escivil_comp2 = ?,
+                c.nombre_comp3 = ?, 
+                c.cc_comp3 = ?, 
+                c.expcc_comp3 = ?, 
+                c.dom_comp3 = ?, 
+                c.escivil_comp3 = ?,
+                c.nombre_comp4 = ?, 
+                c.cc_comp4 = ?, 
+                c.expcc_comp4 = ?, 
+                c.dom_comp4 = ?, 
+                c.escivil_comp4
+            WHERE c.matr_inm = ?;
+        ";
+
+        if ($stmt = $conn->prepare($update_inmuebles_sql)) {
+            foreach ($datos_inmuebles as $index => $inmueble) {                
+                // Puedes necesitar revisar esto si 'matricula_ap' proviene de otro lugar
                 $stmt->bind_param(
-                    'ssssssssss', 
+                    'sssss', 
                     $inmueble['tipo_inm'], 
                     $inmueble['num_inm'], 
                     $inmueble['torre_inm'], 
                     $inmueble['vlr_inm'], 
-                    $comprador['nombre_comp'], 
-                    $comprador['cc_comp'], 
-                    $comprador['expcc_comp'], 
-                    $comprador['escivil_comp'], 
-                    $comprador['domicilio_comp'], 
+                    $inmueble['matr_inm']
+                );
+
+                if (!$stmt->execute()) {
+                    throw new Exception("Error al actualizar inmueble y comprador: " . $stmt->error);
+                    console.log("Error al actualizar inmueble y comprador");
+                }
+            }
+            $stmt->close();
+        } else {
+            throw new Exception("Error en la preparación de la consulta de actualización conjunta: " . $conn->error);
+            console.log("Error preparando consulta");
+        }
+/*
+        // Preparar la consulta para actualización conjunta
+        if ($stmt = $conn->prepare($update_compradores_sql)) {
+            foreach ($datos_compradores as $index => $compradores) {
+                $comprador = $datos_compradores[$index]; // Se asume que los datos de compradores están alineados con los de inmuebles
+                
+                // Asignar los parámetros
+                $stmt->bind_param(
+                    'sssss', 
+                    $datos_compradores['tipo_inm'], 
+                    $inmueble['num_inm'], 
+                    $inmueble['torre_inm'], 
+                    $inmueble['vlr_inm'], 
                     $inmueble['matr_inm'] // Matrícula para la cláusula WHERE
                 );
 
@@ -318,7 +356,7 @@ function actualizarBaseDatos($conn, $datos_inmuebles, $datos_compradores) {
         } else {
             throw new Exception("Error en la preparación de la consulta de actualización conjunta: " . $conn->error);
         }
-
+*/
         // Confirma la transacción
         $conn->commit();
         return true;
