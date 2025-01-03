@@ -1,4 +1,8 @@
 <?php
+require 'vendor/autoload.php';
+require_once 'ConexionBaseDatos.php';
+require_once 'Convertidores.php';
+session_start();
 
 // FUNCION NUMERO A LETRAS
 function numeroALetras($numero, $esMoneda = false, $convertirMayusculas = false)
@@ -75,7 +79,6 @@ function convertirTexto($texto, $convertir_a_mayusculas = true)
     }
 }
 
-
 function prepararValores($inmuebles, $total_vlr_vta)
 {
     // Convertir total de venta
@@ -106,69 +109,223 @@ function prepararValores($inmuebles, $total_vlr_vta)
 }
 ?>
 
-
-
-
-
-
 <script>
-    // Función para mostrar u ocultar los campos de los compradores adicionales
-    function toggleAdditionalBuyers() {
-        var buyersCount = document.getElementById("compradores").value;
-
-        // Ocultar todos los campos adicionales inicialmente
-        document.getElementById("buyer2").style.display = "none";
-        document.getElementById("buyer3").style.display = "none";
-        document.getElementById("buyer4").style.display = "none";
-
-        // Mostrar los campos necesarios según la cantidad de compradores
-        if (buyersCount >= 2) {
-            document.getElementById("buyer2").style.display = "block"; // Mostrar el campo del comprador 2
-        }
-        if (buyersCount >= 3) {
-            document.getElementById("buyer3").style.display = "block"; // Mostrar el campo del comprador 3
-        }
-        if (buyersCount >= 4) {
-            document.getElementById("buyer4").style.display = "block"; // Mostrar el campo del comprador 4
-        }
-    }
-
-    // Llamar a la función para aplicar el comportamiento al cargar la página
-    toggleAdditionalBuyers();
-</script>
-
-<script>
+    // Mostrar/Ocultar la opción de banco según la forma de pago
     function mostrarBanco() {
         const tipoPago = document.getElementById('tipo_escritura').value;
         const opcionBanco = document.getElementById('opcion-banco');
-
-        // Mostrar el campo de selección de banco solo si es Hipoteca o Leasing
-        if (tipoPago === "Hipoteca" || tipoPago === "Leasing") {
-            opcionBanco.style.display = "block"; // Mostrar
-        } else {
-            opcionBanco.style.display = "none"; // Ocultar
-        }
+        opcionBanco.style.display = (tipoPago === 'Hipoteca' || tipoPago === 'Leasing') ? 'block' : 'none';
     }
-    // Llamar a la función para aplicar el comportamiento al cargar la página
-    mostrarBanco();
+    // Inicializar
+    document.addEventListener('DOMContentLoaded', mostrarBanco);
 </script>
 
 <?php
-// Obtener los datos para las listas desplegables
-$sql_municipios = "SELECT nombre_mun FROM municipios";
-$result_municipios = $conn->query($sql_municipios);
-$municipios = [];
-if ($result_municipios->num_rows > 0) {
-    while ($row = $result_municipios->fetch_assoc()) {
-        $municipios[] = $row['nombre_mun'];
+function generarOpciones($opciones, $valorSeleccionado) {
+    $html = '';
+    foreach ($opciones as $opcion) {
+        $seleccionado = ($opcion['id'] == $valorSeleccionado) ? 'selected' : '';
+        $html .= "<option value=\"{$opcion['id']}\" $seleccionado>{$opcion['nombre']}</option>";
+    }
+    return $html;
+}
+
+function generarParrafoDesdeDatos($datos)
+{
+    // Inicializar arreglos para almacenar datos dinámicos
+    $nombres = [];
+    $domicilios = [];
+    $cedulas = [];
+    $expediciones = [];
+    $estadosCiviles = [];
+
+    // Iterar sobre los compradores para agregar solo los que existan
+    for ($i = 1; $i <= 4; $i++) {
+        if (!empty($datos["nombre_comp$i"])) {
+            $nombres[] = $datos["nombre_comp$i"];
+            $domicilios[] = $datos["dom_comp$i"];
+            $cedulas[] = $datos["cc_comp$i"];
+            $expediciones[] = $datos["expcc_comp$i"];
+            $estadosCiviles[] = $datos["escivil_comp$i"];
+        }
     }
 
-    $sql_estado_civil = "SELECT nombre_escivil FROM estados_civiles";
-    $result_estado_civil = $conn->query($sql_estado_civil);
-    $estados_civiles = [];
-    if ($result_estado_civil->num_rows > 0) {
-        while ($row = $result_estado_civil->fetch_assoc()) {
-            $estados_civiles[] = $row['nombre_escivil'];
+    // Contar la cantidad inicial de compradores
+    $cantidadCompradores = count($nombres);
+
+    // Función auxiliar para formatear listas con "y"
+    function formatearListaConY($lista)
+    {
+        if (count($lista) > 1) {
+            $ultimoElemento = array_pop($lista); // Obtener el último elemento
+            return implode(", ", $lista) . " y " . $ultimoElemento; // Reunir la lista
+        } else {
+            return implode(", ", $lista); // Si es uno solo, mantenerlo
         }
+    }
+
+    // Aplicar el formato a cada arreglo
+    $nombresFormateados = formatearListaConY($nombres);
+    $domiciliosFormateados = formatearListaConY($domicilios);
+    $cedulasFormateadas = formatearListaConY($cedulas);
+    $expedicionesFormateadas = formatearListaConY($expediciones);
+    $estadosCivilesFormateados = formatearListaConY($estadosCiviles);
+
+    // Construir el párrafo dinámico
+    $parrafo =
+        $nombresFormateados .
+        ", mayor(es) de edad, domiciliado(a)(s) y residente(s) en " .
+        $domiciliosFormateados .
+        ", identificado(a)(s) con la(s) cédula(s) de ciudadanía número(s) " .
+        $cedulasFormateadas .
+        ", expedida(s) en " .
+        $expedicionesFormateadas .
+        ", de estado civil " .
+        $estadosCivilesFormateados .
+        ", " .
+        "respectivamente, quien(es) obra(n) en nombre propio y en adelante se denominará(n) EL (LA, LOS, LAS) COMPRADOR (A, ES, AS) y manifestó(aron) que ha(n) celebrado contrato de compraventa contenido en las siguientes cláusulas, previas las siguientes:";
+
+    // Eliminar la palabra "respectivamente" si hay un solo comprador
+    if ($cantidadCompradores === 1) {
+        $parrafo = str_replace(", respectivamente", "", $parrafo);
+    }
+
+    return $parrafo;
+}
+
+
+function obtenerDatosInmuebleYCompradores($conn, $matricula_ap, $matricula_pq, $matricula_dp) {
+    // Preparar la consulta SQL con parámetros
+    $query = "
+        SELECT 
+            inmuebles.tipo_inm, 
+            inmuebles.num_inm, 
+            inmuebles.torre_inm,
+            inmuebles.vlr_inm,
+            inmuebles.matr_inm,
+            compradores.nombre_comp1, 
+            compradores.cc_comp1, 
+            compradores.expcc_comp1, 
+            compradores.dom_comp1, 
+            compradores.escivil_comp1,
+            compradores.nombre_comp2, 
+            compradores.cc_comp2, 
+            compradores.expcc_comp2, 
+            compradores.dom_comp2, 
+            compradores.escivil_comp2,
+            compradores.nombre_comp3, 
+            compradores.cc_comp3, 
+            compradores.expcc_comp3, 
+            compradores.dom_comp3, 
+            compradores.escivil_comp3,
+            compradores.nombre_comp4, 
+            compradores.cc_comp4, 
+            compradores.expcc_comp4, 
+            compradores.dom_comp4, 
+            compradores.escivil_comp4
+        FROM 
+            inmuebles
+        LEFT JOIN 
+            compradores 
+        ON 
+            inmuebles.matr_inm = compradores.matr_inm
+        WHERE 
+            inmuebles.matr_inm IN (?, ?, ?)";
+    
+    // Preparar la sentencia
+    if ($stmt = $conn->prepare($query)) {
+        // Vincular los parámetros
+        $stmt->bind_param('sss', $matricula_ap, $matricula_pq, $matricula_dp);
+        
+        // Ejecutar la consulta
+        if (!$stmt->execute()) {
+            return "Error en la ejecución de la consulta: " . $stmt->error;
+        }
+
+        // Obtener los resultados
+        $result = $stmt->get_result();
+        
+        // Verificar si hay resultados
+        if ($result && $result->num_rows > 0) {
+            $data = [];
+            while ($row = $result->fetch_assoc()) {
+                $data[] = $row;
+            }
+            return $data;
+        } else {
+            return "No se encontraron resultados para las matrículas proporcionadas.";
+        }
+        
+        // Cerrar la sentencia
+        $stmt->close();
+    } else {
+        // Manejar el error en la preparación de la consulta
+        return "Error en la preparación de la consulta: " . $conn->error;
+    }
+    echo $query;  // Depuración
+}
+
+
+// Función para actualizar los datos en la base de datos
+function actualizarBaseDatos($conn, $datos_inmuebles, $datos_compradores) {
+    // Inicia la transacción
+    $conn->begin_transaction();
+
+    try {
+        // Actualización de inmuebles y compradores en una sola consulta
+        $update_sql = "
+            UPDATE inmuebles AS i
+            JOIN compradores AS c ON c.matr_inm = i.matr_inm
+            SET
+                i.tipo_inm = ?, 
+                i.num_inm = ?, 
+                i.torre_inm = ?, 
+                i.vlr_inm = ?, 
+                c.nombre_comp = ?, 
+                c.cc_comp = ?, 
+                c.expcc_comp = ?, 
+                c.escivil_comp = ?, 
+                c.domicilio_comp = ?
+            WHERE i.matr_inm = ?;
+        ";
+
+        // Preparar la consulta para actualización conjunta
+        if ($stmt = $conn->prepare($update_sql)) {
+            foreach ($datos_inmuebles as $index => $inmueble) {
+                $comprador = $datos_compradores[$index]; // Se asume que los datos de compradores están alineados con los de inmuebles
+                
+                // Asignar los parámetros
+                $stmt->bind_param(
+                    'ssssssssss', 
+                    $inmueble['tipo_inm'], 
+                    $inmueble['num_inm'], 
+                    $inmueble['torre_inm'], 
+                    $inmueble['vlr_inm'], 
+                    $comprador['nombre_comp'], 
+                    $comprador['cc_comp'], 
+                    $comprador['expcc_comp'], 
+                    $comprador['escivil_comp'], 
+                    $comprador['domicilio_comp'], 
+                    $inmueble['matr_inm'] // Matrícula para la cláusula WHERE
+                );
+
+                // Ejecutar la consulta
+                if (!$stmt->execute()) {
+                    throw new Exception("Error al actualizar inmueble y comprador: " . $stmt->error);
+                }
+            }
+            $stmt->close();
+        } else {
+            throw new Exception("Error en la preparación de la consulta de actualización conjunta: " . $conn->error);
+        }
+
+        // Confirma la transacción
+        $conn->commit();
+        return true;
+    } catch (Exception $e) {
+        // Si ocurre un error, revierte los cambios
+        $conn->rollback();
+        error_log("Error al actualizar datos: " . $e->getMessage());
+        return false;
     }
 }
