@@ -1,0 +1,462 @@
+/* Estilos generales */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    /* Fondo de la página */
+    height: 100%;
+    /* Asegura que el body ocupe toda la altura de la ventana */
+    overflow-x: hidden;
+    /* Evita el scroll horizontal */
+}
+
+/* Contenedor principal */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    /* Permite que los elementos se ajusten si no caben en una línea */
+    height: 100vh;
+    /* Altura completa de la ventana */
+    gap: 20px;
+    /* Espacio entre las columnas */
+}
+
+.left-column {
+    width: 380px;
+    /* Ajusta el ancho deseado */
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 20px;
+    color: #333333;
+    box-sizing: border-box;
+    position: relative;
+    top: 10px;
+}
+
+
+/* Columna derecha */
+.right-column {
+    flex: 2;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 20px;
+    background-image: url('img/escrit.jpg');
+    /* Cambia esto a la ruta de tu imagen */
+    background-size: cover;
+    /* Asegura que la imagen cubra todo el área */
+    background-position: center;
+    /* Centra la imagen en el fondo */
+    background-repeat: no-repeat;
+    /* Evita que la imagen se repita */
+    height: 100vh;
+    /* Asegura que la columna tenga altura completa */
+    box-sizing: border-box;
+}
+
+/* Columna intermedia (centrada) */
+.middle-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    /* Asegura que la columna use todo el espacio vertical */
+    background-image: url('img/escrit.jpg');
+    /* Cambia esto a la ruta de tu imagen */
+    background-size: cover;
+    /* Asegura que la imagen cubra todo el área */
+    background-position: center;
+    /* Centra la imagen en el fondo */
+    background-repeat: no-repeat;
+    /* Evita que la imagen se repita */
+}
+
+.middle-column img {
+    width: 100%;
+    height: auto;
+    max-width: 800px;
+    /* Limita el tamaño máximo de la imagen */
+}
+
+/* Estilos para los títulos */
+h1 {
+    color: #3354af;
+    text-align: center;
+    margin: 20px 10px;
+    font-size: 45px;
+}
+
+/* Estilos para los subtítulos */
+h2 {
+    display: inline-block;
+    padding: 10px 20px;
+    color: white;
+    background-color: #00cccc;
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 20px;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+/* Estilo para el logo */
+.logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.logo img {
+    max-width: 500px;
+}
+
+/* Menú flotante */
+.floating-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Botones genéricos */
+.boton {
+    display: inline-block;
+    padding: 10px 20px;
+    color: white;
+    background-color: #0f56f0;
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 20px;
+    text-align: center;
+    transition: background-color 0.3s;
+    margin-bottom: 10px;
+    /* Espacio entre los botones */
+}
+
+.boton:hover {
+    background-color: #8b9696;
+}
+
+/* Botón activo */
+.boton.active {
+    background-color: #00cccc;
+    /* Color de fondo del botón activo */
+}
+
+/* Menú flotante */
+.floating-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Estilo para los botones de las tablas */
+.table-buttons {
+    display: flex;
+    /* Establece un contenedor flexible para los elementos internos. */
+    flex-wrap: wrap;
+    /* Permite que los elementos se muevan a una nueva línea si no caben en una fila. */
+    gap: 10px;
+    /* Añade un espacio uniforme de 10px entre los elementos del contenedor. */
+    justify-content: center;
+    /* Centra los elementos horizontalmente dentro del contenedor. */
+}
+
+
+/* Estilo para todos los formularios */
+form {
+    display: flex;
+    flex-direction: column;
+    /* Coloca los elementos en una columna */
+    gap: 20px;
+    /* Espacio entre cada fila */
+    width: 100%;
+    /* Asegura que el formulario ocupe todo el ancho de la columna */
+    max-width: 500px;
+    /* Limitar el ancho máximo del formulario */
+    margin-top: 50px;
+    /* Agregar margen superior para separar del título o otros elementos */
+    padding: 20px;
+    background-color: transparent;
+    /* Fondo blanco para hacer que el formulario se distinga del fondo de la columna */
+    border-radius: 8px;
+    /* Bordes redondeados */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 9);
+    /* Sombra suave */
+}
+
+/* Estilo para cada grupo de etiqueta y campo */
+form .form-group {
+    display: flex;
+    align-items: center;
+    /* Alinea las etiquetas y los inputs verticalmente */
+    gap: 20px;
+    /* Espacio entre la etiqueta y el input */
+}
+
+form label {
+    font-size: 18px;
+    /* Hace que las etiquetas sean más visibles */
+    width: 120px;
+    /* Establecer un ancho fijo para las etiquetas */
+    background-color: #0f56f0;
+    color: white;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="email"],
+form input[type="number"] {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    /* Ocupa todo el ancho disponible */
+    max-width: 300px;
+    /* Limita el ancho máximo de los inputs */
+    background-color: transparent;
+    border-color: #0f56f0;
+}
+
+form button {
+    padding: 10px;
+    background-color: #0f56f0;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #00cccc;
+}
+
+.escritura-texto {
+    font-family: 'Dancing Script', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    /* Fuente cursiva */
+    font-size: 80px;
+    /* Reducir tamaño de la fuente para que quepa */
+    color: #1428df;
+    /* Color azul */
+    font-weight: bold;
+    /* Negrita */
+    transform: rotate(-10deg) translate(-15%, 250%);
+    /* Ajustar rotación y mover hacia el centro */
+    display: inline-block;
+    /* Asegura que el texto sea tratado como un bloque en línea para aplicar transformaciones */
+    white-space: nowrap;
+    /* Evita que el texto se rompa en varias líneas */
+    text-align: center;
+    /* Centra el texto */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Formulario para llamar consulta SQL */
+.styled-form {
+    max-width: 600px; /* Incrementa el ancho máximo para acomodar dos columnas */
+    margin: auto; /* Centra el formulario */
+    display: grid; /* Cambia a un diseño de cuadrícula */
+    grid-template-columns: repeat(2, 1fr); /* Define dos columnas de igual ancho */
+    gap: 10px; /* Espaciado entre elementos */
+    position: relative;
+    top: -50px; /* Ajusta el posicionamiento vertical */
+    left: -260px; /* Ajusta el posicionamiento horizontal */
+}
+
+
+/* Estilos para el botón en el formulario */
+.styled-form button {
+    font-size: 12;
+    padding: 8px; /* Espaciado interno para el botón */
+    background-color: #0f56f0; /* Color de fondo del botón */
+    color: white; /* Color del texto dentro del botón */
+    border: none; /* Sin borde */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
+    margin-top: 3px; /* Margen superior del botón */
+    margin-bottom: -18px; /* Margen inferior negativo para ajustar su posición */
+}
+
+.styled-form button:hover {
+    background-color: #8b9696;
+}
+
+/* Estilo para el formulario fpago */
+.fpago {
+    font-size: 12px; /* Tamaño de fuente ajustado */
+    margin-top: 0px;
+    flex-direction: column;
+    border: 2px solid #0f56f0; /* Borde de 2px de color azul */
+    padding: 10px; /* Espacio interno para separar el contenido del borde */
+    border-radius: 5px; /* Bordes redondeados */
+}
+
+
+/* Estilos adicionales para asegurar buen espaciado entre los campos de las secciones */
+.fpago label{
+    font-size: 12px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+/* Ajustar las listas desplegables dentro de .fpago y .inmuebles al tamaño del contenedor */
+.fpago select {
+    font-size: 12px; /* Ajusta el tamaño de fuente en las listas desplegables */
+    padding: 1px; /* Espaciado interno dentro de las listas desplegables */
+    width: 30%; /* Hace que el select ocupe el 100% del ancho del contenedor */
+    box-sizing: border-box; /* Asegura que el padding no sobrepase el tamaño del contenedor */
+    margin-bottom: 2px;
+}
+
+.opcion-banco {
+    padding: 1px; /* Espaciado interno dentro de las listas desplegables */
+    width: 340%; /* Hace que el select ocupe el 100% del ancho del contenedor */
+    box-sizing: border-box; /* Asegura que el padding no sobrepase el tamaño del contenedor */
+    margin-bottom: 10px;
+}
+
+/* Estilo para el formulario inmuebles */
+.inmuebles {
+    font-size: 2px; /* Tamaño de fuente reducido */
+    margin-top: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+
+}
+
+/* Estilos adicionales para asegurar buen espaciado entre los campos de las secciones */
+.inmuebles label {
+    font-size: 10px;
+    margin-bottom: 5px;
+    font-weight: bold;
+
+}
+
+/* Ajustar los inputs en .inmuebles para reducir el tamaño de la caja */
+.inmuebles input {
+    padding: 5px 10px; /* Ajusta el padding para reducir la altura */
+    font-size: 12px; /* Fuente reducida */
+    background-color: white;
+    width: 50%; /* Reduce el ancho del input al 50% del contenedor */
+    max-width: 10px; /* Establece un ancho máximo para que no se expanda demasiado */
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho del input */
+    height: auto; /* Asegura que la altura se ajuste al contenido */
+    margin: 0 auto; /* Centra el input dentro del contenedor */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Formulario para mostrar datos resultados de SQL */
+
+.styled-formuestra {
+    max-width: 600px; /* Ajusta el ancho máximo del formulario */
+    margin: 20px auto; /* Centra el formulario horizontalmente */
+    padding: 15px; /* Espaciado interno */
+    background-color: #f9f9f9; /* Fondo claro */
+    border: 2px solid #0f56f0; /* Borde azul */
+    border-radius: 8px; /* Bordes redondeados */
+    display: grid; /* Configura un grid layout */
+    grid-template-columns: repeat(4, 2fr); /* Dos columnas de ancho uniforme */
+    gap: 20px; /* Espacio entre filas y columnas */
+    font-size: 14px; /* Tamaño de fuente */
+}
+
+/* Etiquetas dentro de styled-formuestra */
+.styled-formuestra label {
+    font-weight: bold; /* Resalta las etiquetas */
+    color: #333; /* Color de texto oscuro */
+    margin-bottom: 5px; /* Espacio debajo de las etiquetas */
+}
+
+/* Inputs de solo lectura */
+.styled-formuestra input[readonly] {
+    background-color: #e9ecef; /* Fondo gris claro */
+    border: 1px solid #ccc; /* Borde gris */
+    border-radius: 4px; /* Bordes redondeados */
+    padding: 8px; /* Espaciado interno */
+    font-size: 14px; /* Tamaño de fuente */
+    color: #495057; /* Color de texto */
+    cursor: not-allowed; /* Cursor para indicar que no es editable */
+}
+
+/* Títulos de secciones */
+.styled-formuestra h3 {
+    grid-column: 1 / -1; /* Toma todo el ancho del grid */
+    text-align: center; /* Centra el texto */
+    color: #0f56f0; /* Color azul */
+    font-size: 18px; /* Tamaño de fuente */
+    margin-bottom: 15px; /* Espaciado inferior */
+}
+
+/* Espaciado entre secciones */
+.styled-formuestra .section {
+    grid-column: 1 / -1; /* Toma todo el ancho del grid */
+    margin-top: 20px; /* Espaciado superior */
+}
+
+/* Alineación específica para los inputs */
+.styled-formuestra input {
+    width: 100%; /* Abarca el ancho completo */
+    box-sizing: border-box; /* Incluye bordes y padding en el ancho */
+}
+
+/* Ajuste para dispositivos pequeños */
+@media (max-width: 768px) {
+    .styled-formuestra {
+        grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
+        gap: 10px; /* Reduce el espacio entre elementos */
+    }
+}
